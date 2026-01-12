@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Welcome to MBBS PROFS PREP!</title>
+    <style>
+        /* --- CORE STYLES --- */
+        :root {
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --success-color: #28a745;
+            --success-hover: #218838;
+            --danger-color: #dc3545;
+            --danger-hover: #c82333;
+            --warning-bg: #ffc107;
+            --text-dark: #333;
+            --bg-light: #f4f7f6;
+        }
+
+        body, h1, p, button, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        /* CONFIG WARNING BANNER (Hidden by default) */
+        #config-warning {
+            background-color: #ff4444;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Top Notification Bar */
+        .top-bar {
+            background-color: #e9ecef;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #ddd;
+            margin-top: 0;
+        }
+
+        .top-bar a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .top-bar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative; 
+        }
+
+        /* --- TOP ACTIONS --- */
+        .top-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .action-btn {
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: none;
+        }
+
+        /* Login Button */
+        .btn-login {
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-login:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Notice Button */
+        .btn-notice {
+            color: #e67e22;
+            border: 2px solid #e67e22;
+            position: relative;
+        }
+        .btn-notice:hover {
+            background-color: #e67e22;
+            color: white;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .notice-badge {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Header */
+        .brand-header {
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+            margin-top: 20px; 
+        }
+
+        .logo-text {
+            font-size: 3em;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            max-width: 700px;
+            margin-bottom: 40px;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.2em;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section p {
+            font-size: 1.15em;
+            color: #555;
+        }
+
+        /* Subscription Box */
+        .subscription-box {
+            background: linear-gradient(135deg, #ffc107, #ffdb4d);
+            color: #333;
+            padding: 25px 35px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+            max-width: 380px;
+            margin-bottom: 40px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subscription-box:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 193, 7, 0.5);
+            animation: none;
+        }
+
+        .price-highlight {
+            font-weight: 800;
+            color: #b02a37;
+            display: block;
+            margin: 0;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+            line-height: 1.2;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 50px;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .cta-button {
+            padding: 14px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            color: white;
+        }
+
+        .demo-link { background-color: var(--success-color); }
+        .demo-link:hover { background-color: var(--success-hover); transform: translateY(-3px); }
+
+        #buy-button { background-color: var(--danger-color); }
+        #buy-button:hover { background-color: var(--danger-hover); transform: translateY(-3px); }
+
+        /* Video Section */
+        .instruction-section {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 10px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .instruction-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- MODALS --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.show { opacity: 1; }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .modal-body {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 25px;
+            overflow-y: auto;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding-top: 10px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-confirm { background-color: var(--success-color); color: white; }
+        .btn-confirm:hover { background-color: var(--success-hover); }
+        
+        .btn-cancel { background-color: #e0e0e0; color: #333; }
+        .btn-cancel:hover { background-color: #d0d0d0; }
+
+        /* Notices List */
+        .notice-list { text-align: left; }
+        .notice-item { padding: 12px 5px; border-bottom: 1px solid #f0f0f0; line-height: 1.4; }
+        .notice-item:last-child { border-bottom: none; }
+        .notice-date { display: block; font-size: 0.8em; color: #999; margin-bottom: 4px; text-transform: uppercase; font-weight: 600; }
+        
+        /* Animations */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* Media Queries */
+        @media (max-width: 600px) {
+            .logo-text { font-size: 2.2em; }
+            .welcome-section h1 { font-size: 1.8em; }
+            .welcome-section { padding: 25px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-button { width: 100%; }
+            .top-actions {
+                position: relative; top: auto; right: auto; width: 100%;
+                justify-content: center; flex-direction: column; margin-bottom: 20px; gap: 10px;
+            }
+            .action-btn { width: 100%; justify-content: center; }
+            .brand-header { margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SYSTEM CHECK BANNER -->
+    <div id="config-warning">
+        ⚠️ SETUP REQUIRED: Please check console. Firebase Config seems missing.
+    </div>
+
+    <div class="top-bar">
+        <a href="https://medqs-official.blogspot.com/2025/10/whats-available-now.html" target="_blank">
+            📢 Check out what's available now
+        </a>
+    </div>
+
+    <div class="container">
+        
+        <div class="top-actions">
+            <button class="action-btn btn-notice" id="notice-btn">
+                🔔 Notices
+                <span class="notice-badge"></span> 
+            </button>
+
+            <button class="action-btn btn-login">
+                🔐 Member Login
+            </button>
+        </div>
+
+        <div class="brand-header">
+            <div class="logo-text">🌟 MBBS PROFS PREP</div>
+        </div>
+
+        <div class="welcome-section">
+            <h1>Welcome, Future Achievers!</h1>
+            <p>
+                Your journey to academic excellence starts here. Dive into engaging content, practice quizzes, and learning tools designed just for you. Get ready to master your subjects!
+            </p>
+        </div>
+
+        <div class="subscription-box" id="subscription-box-link">
+            <p style="margin-bottom: 12px; font-weight: 700; font-size: 1.2em;">Unlock Premium Access:</p>
+            <div style="border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; margin-bottom: 10px;">
+                <span class="price-highlight" style="font-size: 2em;">₹149</span>
+                <p>for 1 Month</p>
+            </div>
+            <div>
+                <span class="price-highlight" style="font-size: 2.5em;">₹249</span>
+                <p>for 3 Months</p> 
+                <span style="font-size: 0.75em; background: #dc3545; color: white; padding: 3px 8px; border-radius: 20px; font-weight: bold; margin-top: 5px; display: inline-block;">🔥 BEST VALUE</span>
+            </div>
+        </div>
+
+        <div class="cta-buttons">
+            <a class="cta-button demo-link" href="https://demombbs.blogspot.com" target="_blank">
+                🚀 Try a Free Demo
+            </a>
+            <a class="cta-button" href="#" id="buy-button">
+                🎉 Buy Subscription Now
+            </a>
+        </div>
+
+        <div class="instruction-section">
+            <div class="instruction-title">
+                🎥 Instruction: How to Buy & Get Access
+            </div>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/2LrA62kr_k0?rel=0" 
+                    title="Instruction Video" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL 1: Payment Info -->
+    <div class="modal-overlay" id="custom-modal">
+        <div class="modal-content">
+            <div class="modal-title">Next Steps</div>
+            <div class="modal-body">
+                Redirecting to payment submission page. Please complete the form and upload your transaction proof to activate your account.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="modal-btn btn-confirm" id="modal-confirm">Proceed to Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Notices -->
+    <div class="modal-overlay" id="notices-modal">
+        <div class="modal-content">
+            <div class="modal-title">📢 All Notices</div>
+            <div class="modal-body">
+                <div class="notice-list">
+                    <div class="notice-item">
+                        <span class="notice-date">Current</span>
+                        <span><strong>Welcome:</strong> MICRO MCQ AND PHARMA MCQs uploaded on 22 Nov 2025.</span>
+                    </div>
+                    <div class="notice-item">
+                        <span class="notice-date">Update</span>
+                        <span><strong>New Features:</strong> Filter option added.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" id="notices-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Login (Firebase) -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-title">🔐 Member Verification</div>
+            <div class="modal-body">
+                <p style="margin-bottom:15px;">Please sign in with your registered Google Account.</p>
+                <p id="login-error-msg" style="color: #dc3545; font-size: 0.9em; display: none; font-weight: bold; background:#fff3f3; padding:10px; border-radius:6px;"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" id="login-cancel">Cancel</button>
+                <button class="modal-btn btn-confirm" id="login-submit">🔵 Sign in with Google</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT & FIREBASE LOGIC -->
+    <script type="module">
+        // 1. Import Auth + Realtime Database SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } 
+            from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getDatabase, ref, set, get, onValue } 
+            from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        // --- FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvPdEhkK1VDkuAqIhlSXPL2MXxlv7Mo9c",
+            authDomain: "mbbs-profs-prep48c.firebaseapp.com",
+            databaseURL: "https://mbbs-profs-prep48c-default-rtdb.firebaseio.com",
+            projectId: "mbbs-profs-prep48c",
+            storageBucket: "mbbs-profs-prep48c.firebasestorage.app",
+            messagingSenderId: "378639777472",
+            appId: "1:378639777472:web:9c2dcb689d97025f6ff725"
+        };
+
+        // --- SETTINGS ---
+        const PAYMENT_URL = 'https://medqs-official.blogspot.com/p/payment-page.html';
+        const MEMBER_URL = 'https://medqs.blogspot.com/';
+        // ⚠️ CHANGE THIS TO YOUR ACTUAL EMAIL IF DIFFERENT
+        const ADMIN_EMAIL = "roberto@gmail.com"; 
+        const DEVICE_LIMIT = 2; // Max devices per user
+
+        // --- DOM ELEMENTS ---
+        const configWarning = document.getElementById('config-warning');
+        const paymentModal = document.getElementById('custom-modal');
+        const noticesModal = document.getElementById('notices-modal');
+        const loginModal = document.getElementById('login-modal');
+        const noticeBadge = document.querySelector('.notice-badge');
+        
+        const buyButton = document.getElementById('buy-button');
+        const subBox = document.getElementById('subscription-box-link');
+        const noticeBtn = document.getElementById('notice-btn');
+        const loginBtn = document.querySelector('.btn-login');
+
+        const modalConfirm = document.getElementById('modal-confirm');
+        const modalCancel = document.getElementById('modal-cancel');
+        const noticesClose = document.getElementById('notices-close');
+        const loginSubmit = document.getElementById('login-submit');
+        const loginCancel = document.getElementById('login-cancel');
+        const loginError = document.getElementById('login-error-msg');
+
+        // --- FIREBASE INITIALIZATION ---
+        let app, auth, db, provider;
+        let isConfigValid = false;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getDatabase(app);
+            provider = new GoogleAuthProvider();
+            isConfigValid = true;
+        } catch (e) {
+            console.error("Firebase Init Failed:", e);
+            configWarning.style.display = "block";
+            loginError.innerHTML = "System Error. Check Console.";
+        }
+
+        // --- HELPER FUNCTIONS ---
+        function openModal(el) {
+            el.style.display = 'flex';
+            setTimeout(() => el.classList.add('show'), 10);
+        }
+
+        function closeModal(el) {
+            el.classList.remove('show');
+            setTimeout(() => {
+                el.style.display = 'none';
+                if(el === loginModal) {
+                    if(loginError && isConfigValid) loginError.style.display = 'none';
+                    if(loginSubmit) {
+                        loginSubmit.innerHTML = "🔵 Sign in with Google";
+                        loginSubmit.disabled = false;
+                    }
+                }
+            }, 300);
+        }
+
+        function updateBadgeCount() {
+            const count = document.querySelectorAll('.notice-item').length;
+            if (noticeBadge) {
+                noticeBadge.textContent = count;
+                noticeBadge.style.display = count === 0 ? 'none' : '';
+            }
+        }
+
+        // --- SESSION LOGIC (ONE/TWO DEVICE RULE) ---
+        function generateSessionId() {
+            return Math.random().toString(36).substring(2) + Date.now().toString(36);
+        }
+
+        function monitorSession(user) {
+            if (!isConfigValid || !db) return;
+            if (user.email === ADMIN_EMAIL) return; // Admin bypass
+
+            const userSessionsRef = ref(db, 'users/' + user.uid + '/sessions');
+            const myLocalSession = localStorage.getItem('mySessionId');
+
+            onValue(userSessionsRef, (snapshot) => {
+                const activeSessions = snapshot.val() || [];
+                // If my local session is NOT in the database list, I was kicked out.
+                if (!activeSessions.includes(myLocalSession)) {
+                    signOut(auth).then(() => {
+                        alert("⚠️ Security Alert\n\nYou have exceeded the device limit (Max 2).\nLogging you out of this device to protect your account.");
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+
+        // --- GOOGLE LOGIN LOGIC ---
+        function handleGoogleLogin() {
+            if (!isConfigValid) {
+                alert("⚠️ System Error: Firebase not initialized.");
+                return;
+            }
+
+            loginSubmit.innerHTML = "Verifying...";
+            loginSubmit.disabled = true;
+
+            signInWithPopup(auth, provider)
+                .then(async (result) => {
+                    const user = result.user;
+                    const email = user.email.toLowerCase();
+
+                    // 1. Check Membership (Fetches from Database)
+                    const allowedEmailsRef = ref(db, 'allowed_emails');
+                    const snapshot = await get(allowedEmailsRef);
+
+                    if (!snapshot.exists()) {
+                         // Fallback check for admin if DB list is empty
+                         if (email !== ADMIN_EMAIL) {
+                             throw new Error("DB_CONFIG_ERROR"); 
+                         }
+                    }
+
+                    // Get values from DB (supports Array or Object)
+                    let allowedList = [];
+                    if (snapshot.exists()) {
+                        const allowedData = snapshot.val();
+                        allowedList = Object.values(allowedData).map(e => e.toString().toLowerCase());
+                    }
+
+                    if (!allowedList.includes(email) && email !== ADMIN_EMAIL) {
+                        throw new Error("NOT_MEMBER");
+                    }
+
+                    // 2. Handle Session Limits (Skip for Admin)
+                    if (email !== ADMIN_EMAIL) {
+                        const userSessionsRef = ref(db, 'users/' + user.uid + '/sessions');
+                        const sessionSnap = await get(userSessionsRef);
+                        let sessions = sessionSnap.val() || [];
+                        if (!Array.isArray(sessions)) sessions = [];
+
+                        const newSessionId = generateSessionId();
+                        localStorage.setItem('mySessionId', newSessionId);
+
+                        sessions.push(newSessionId);
+                        // Queue Logic: If > 2 devices, remove the oldest (first one)
+                        while (sessions.length > DEVICE_LIMIT) {
+                            sessions.shift(); 
+                        }
+
+                        await set(userSessionsRef, sessions);
+                    }
+
+                    // 3. Success
+                    loginSubmit.innerHTML = "Success! Redirecting...";
+                    loginSubmit.style.backgroundColor = "#28a745";
+                    setTimeout(() => { window.location.href = MEMBER_URL; }, 1000);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    loginSubmit.disabled = false;
+                    loginSubmit.innerHTML = "🔵 Sign in with Google";
+                    loginError.style.display = 'block';
+
+                    if (error.message === "NOT_MEMBER") {
+                        loginError.innerHTML = "⚠️ <b>Access Denied</b><br>You are not a Premium Member.<br>Please subscribe.";
+                    } else if (error.message === "DB_CONFIG_ERROR") {
+                        loginError.innerHTML = "⚠️ System Error: Member list not found in database.";
+                    } else if (error.code === "auth/api-key-not-valid") {
+                        loginError.innerHTML = "⚠️ Configuration Error: Invalid API Key.";
+                    } else if (error.code === "PERMISSION_DENIED") {
+                         loginError.innerHTML = "⚠️ Access Error: Database permissions denied. Check Rules.";
+                    } else {
+                        loginError.innerHTML = "Login failed. Please try again.";
+                    }
+                    if(auth) signOut(auth);
+                });
+        }
+
+        // --- EVENT LISTENERS ---
+        updateBadgeCount();
+
+        // Payment
+        buyButton.addEventListener('click', (e) => { e.preventDefault(); openModal(paymentModal); });
+        subBox.addEventListener('click', () => openModal(paymentModal));
+        modalConfirm.addEventListener('click', () => { 
+            window.open(PAYMENT_URL, '_blank'); 
+            closeModal(paymentModal); 
+        });
+        modalCancel.addEventListener('click', () => closeModal(paymentModal));
+
+        // Notices
+        noticeBtn.addEventListener('click', () => openModal(noticesModal));
+        noticesClose.addEventListener('click', () => closeModal(noticesModal));
+
+        // Login
+        loginBtn.addEventListener('click', () => openModal(loginModal));
+        loginSubmit.addEventListener('click', handleGoogleLogin);
+        loginCancel.addEventListener('click', () => closeModal(loginModal));
+
+        // Auto-Monitor on Page Load
+        if (isConfigValid && auth) {
+            onAuthStateChanged(auth, (user) => {
+                // We perform a light check here, strict check happens on login
+                if (user) {
+                     monitorSession(user);
+                }
+            });
+        }
+
+        // Close on Outside Click
+        window.addEventListener('click', (e) => {
+            if (e.target === paymentModal) closeModal(paymentModal);
+            if (e.target === noticesModal) closeModal(noticesModal);
+            if (e.target === loginModal) closeModal(loginModal);
+        });
+
+    </script>
+</body>
+</html>
