@@ -616,8 +616,12 @@
             if (!isConfigValid || !db) return;
             if (user.email === ADMIN_EMAIL) return; // Admin bypass
 
-            const userSessionsRef = ref(db, 'users/' + user.uid + '/sessions');
+            // FIX: If we just logged in, we might not have the session ID yet.
+            // If it's missing locally, DO NOT kick the user out.
             const myLocalSession = localStorage.getItem('mySessionId');
+            if (!myLocalSession) return;
+
+            const userSessionsRef = ref(db, 'users/' + user.uid + '/sessions');
 
             onValue(userSessionsRef, (snapshot) => {
                 const activeSessions = snapshot.val() || [];
